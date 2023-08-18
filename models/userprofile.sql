@@ -13,7 +13,11 @@ with __dbt__cte__userprofile_ab1 as (
 -- depends_on: "dev".basic_profile._airbyte_raw_userprofile
 select
     case when _airbyte_data."createdAt" != '' then _airbyte_data."createdAt" end as createdat,
-    _airbyte_data."profileList" as profilelist,
+    case when _airbyte_data."profileList[0].id"!='' then _airbyte_data."profileList[0].id" end as profileId,
+    case when  _airbyte_data."profileList[0].phone" != '' then _airbyte_data."profileList[0].phone" end as phone,
+    case when  _airbyte_data."profileList[0].name" != '' then _airbyte_data."profileList[0].name" end as name,
+    case when  _airbyte_data."profileList[0].email" !='' then _airbyte_data."profileList[0].email" end as email,
+    -- _airbyte_data."profileList" as profilelist,
     case when _airbyte_data."id" != '' then _airbyte_data."id" end as id,
     case when _airbyte_data."_id" != '' then _airbyte_data."_id" end as _id,
     case when _airbyte_data."_class" != '' then _airbyte_data."_class" end as _class,
@@ -32,7 +36,10 @@ where 1 = 1
 -- depends_on: __dbt__cte__userprofile_ab1
 select
     cast(createdat as text) as createdat,
-    profilelist,
+    cast(profileId as text) as profileId,
+    cast(phone as text) as phone,
+    cast(name as text) as name,
+    cast(email as text) as email,,
     cast(id as text) as id,
     cast(_id as text) as _id,
     cast(_class as text) as _class,
@@ -52,7 +59,10 @@ where 1 = 1
 -- SQL model to build a hash column based on the values of this record
 -- depends_on: __dbt__cte__userprofile_ab2
 select
-    md5(cast(coalesce(cast(createdat as text), '') || '-' || coalesce(cast(json_serialize(profilelist) as text), '') || '-' || coalesce(cast(id as text), '') || '-' || coalesce(cast(_i
+    md5(cast(coalesce(cast(createdat as text), '') || '-' || coalesce(cast(profileId as text), '') || '-' || coalesce(cast(phone as text), '') 
+    || '-' || coalesce(cast(name as text), '')
+    || '-' || coalesce(cast(email as text), '')
+    || '-' || coalesce(cast(id as text), '') || '-' || coalesce(cast(_i
 d as text), '') || '-' || coalesce(cast(_class as text), '') || '-' || coalesce(cast(userid as text), '') || '-' || coalesce(cast(status as text), '') || '-' || coalesce(cast(updatedat
  as text), '') as text)) as _airbyte_userprofile_hashid,
     tmp.*
@@ -63,7 +73,11 @@ where 1 = 1
 -- depends_on: __dbt__cte__userprofile_ab3
 select
     createdat,
-    profilelist,
+    profileId,
+    phone,
+    name,
+    email,
+    -- profilelist,
     id,
     _id,
     _class,
@@ -77,4 +91,4 @@ select
 from __dbt__cte__userprofile_ab3
 -- userprofile from "dev".basic_profile._airbyte_raw_userprofile
 where 1 = 1
-  );bash-4.2#
+  );
