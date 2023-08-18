@@ -70,7 +70,7 @@ __dbt__cte__userprofile_ab3 as (
           cast(id as text), 
           ''
         ) || '-' || coalesce(
-          cast(_i d as text), 
+          cast(_id as text), 
           ''
         ) || '-' || coalesce(
           cast(_class as text), 
