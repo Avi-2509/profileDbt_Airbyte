@@ -114,4 +114,4 @@ select
 from 
   __dbt__cte__userprofile_ab3 -- userprofile from "dev".basic_profile._airbyte_raw_userprofile
 where 
-  1 = 1;
+  1 = 1
