@@ -31,7 +31,6 @@ __dbt__cte__userprofile_ab2 as (
     cast(phone as text) as phone, 
     cast(name as text) as name, 
     cast(email as text) as email, 
-    , 
     cast(id as text) as id, 
     cast(_id as text) as _id, 
     cast(_class as text) as _class, 
