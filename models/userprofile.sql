@@ -5,10 +5,10 @@
 
   select 
     case when _airbyte_data."createdAt" != '' then _airbyte_data."createdAt" end as createdat, 
-    case when _airbyte_data."profileList.id" != '' then _airbyte_data."profileList.id" end as profileId, 
-    case when _airbyte_data."profileList.phone" != '' then _airbyte_data."profileList.phone" end as phone, 
-    case when _airbyte_data."profileList.name" != '' then _airbyte_data."profileList.name" end as name, 
-    case when _airbyte_data."profileList.email" != '' then _airbyte_data."profileList.email" end as email, 
+    case when _airbyte_data."profileList[0].id" != '' then _airbyte_data."profileList[0].id" end as profileId, 
+    case when _airbyte_data."profileList[0].phone" != '' then _airbyte_data."profileList[0].phone" end as phone, 
+    case when _airbyte_data."profileList[0].name" != '' then _airbyte_data."profileList[0].name" end as name, 
+    case when _airbyte_data."profileList[0].email" != '' then _airbyte_data."profileList[0].email" end as email, 
     _airbyte_data."profileList" as profilelist,
     case when _airbyte_data."id" != '' then _airbyte_data."id" end as id, 
     case when _airbyte_data."_id" != '' then _airbyte_data."_id" end as _id, 
@@ -31,7 +31,7 @@ __dbt__cte__userprofile_ab2 as (
   -- depends_on: __dbt__cte__userprofile_ab1
   select 
     cast(createdat as text) as createdat, 
-    profileList,
+    cast(profileList as array) as profileList,
     cast(profileId as text) as profileId, 
     cast(phone as text) as phone, 
     cast(name as text) as name, 
@@ -61,7 +61,8 @@ __dbt__cte__userprofile_ab3 as (
         coalesce(
           cast(createdat as text), 
           ''
-        ) || '-' || coalesce(cast(json_serialize(profilelist) as text), '')
+        ) || '-' || coalesce(cast(profilelist as array))
+
     
         || '-' || coalesce(
           cast(profileId as text), 
@@ -110,7 +111,7 @@ select
   phone, 
   name, 
   email, 
-profilelist,
+  profilelist,
   id, 
   _id, 
   _class, 
@@ -125,3 +126,4 @@ from
   __dbt__cte__userprofile_ab3 -- userprofile from "dev".basic_profile._airbyte_raw_userprofile
 where 
   1 = 1
+  
