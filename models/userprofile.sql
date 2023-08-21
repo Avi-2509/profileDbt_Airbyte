@@ -4,11 +4,7 @@
   -- depends_on: "dev".basic_profile._airbyte_raw_userprofile
 
   select 
-    case when _airbyte_data."createdAt" != '' then _airbyte_data."createdAt" end as createdat, 
-    case when _airbyte_data."profileList[0].id" != '' then _airbyte_data."profileList[0].id" end as profileId, 
-    case when _airbyte_data."profileList[0].phone" != '' then _airbyte_data."profileList[0].phone" end as phone, 
-    case when _airbyte_data."profileList[0].name" != '' then _airbyte_data."profileList[0].name" end as name, 
-    case when _airbyte_data."profileList[0].email" != '' then _airbyte_data."profileList[0].email" end as email, 
+    case when _airbyte_data."createdAt" != '' then _airbyte_data."createdAt" end as createdat,  
     _airbyte_data."profileList" as profilelist,
     case when _airbyte_data."id" != '' then _airbyte_data."id" end as id, 
     case when _airbyte_data."_id" != '' then _airbyte_data."_id" end as _id, 
@@ -32,10 +28,6 @@ __dbt__cte__userprofile_ab2 as (
   select 
     cast(createdat as text) as createdat, 
     profileList,
-    cast(profileId as text) as profileId, 
-    cast(phone as text) as phone, 
-    cast(name as text) as name, 
-    cast(email as text) as email, 
     cast(id as text) as id, 
     cast(_id as text) as _id, 
     cast(_class as text) as _class, 
@@ -61,22 +53,9 @@ __dbt__cte__userprofile_ab3 as (
         coalesce(
           cast(createdat as text), 
           ''
-        ) || '-' || coalesce(cast(json_serialize(profilelist) as text))
-
-    
+        ) || '-' || coalesce(
+            cast(json_serialize(profilelist) as text), '')
         || '-' || coalesce(
-          cast(profileId as text), 
-          ''
-        ) || '-' || coalesce(
-          cast(phone as text), 
-          ''
-        ) || '-' || coalesce(
-          cast(name as text), 
-          ''
-        ) || '-' || coalesce(
-          cast(email as text), 
-          ''
-        ) || '-' || coalesce(
           cast(id as text), 
           ''
         ) || '-' || coalesce(
@@ -107,10 +86,10 @@ __dbt__cte__userprofile_ab3 as (
 
 select 
   createdat, 
-  profileId, 
-  phone, 
-  name, 
-  email, 
+--   profileId, 
+--   phone, 
+--   name, 
+--   email, 
   profilelist,
   id, 
   _id, 
