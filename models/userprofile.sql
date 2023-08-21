@@ -31,7 +31,7 @@ __dbt__cte__userprofile_ab2 as (
   -- depends_on: __dbt__cte__userprofile_ab1
   select 
     cast(createdat as text) as createdat, 
-    cast(profileList as array) as profileList,
+    profileList,
     cast(profileId as text) as profileId, 
     cast(phone as text) as phone, 
     cast(name as text) as name, 
@@ -61,7 +61,7 @@ __dbt__cte__userprofile_ab3 as (
         coalesce(
           cast(createdat as text), 
           ''
-        ) || '-' || coalesce(cast(profilelist as array))
+        ) || '-' || coalesce(cast(json_serialize(profilelist) as text))
 
     
         || '-' || coalesce(
@@ -126,4 +126,3 @@ from
   __dbt__cte__userprofile_ab3 -- userprofile from "dev".basic_profile._airbyte_raw_userprofile
 where 
   1 = 1
-  
