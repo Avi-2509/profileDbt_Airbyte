@@ -1,3 +1,4 @@
+
 {{ config(materialized='table') }}
 select
     u.userId as userId,
