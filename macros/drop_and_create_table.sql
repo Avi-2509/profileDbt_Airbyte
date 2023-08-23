@@ -4,7 +4,7 @@
     {% set schema_name, table_name = table_name.split('.') %}
     DROP TABLE IF EXISTS "{{ schema_name }}"."{{ table_name }}";
 
-    CREATE TABLE "public"."testDb1" AS
+    CREATE TABLE "public"."profileInfo" AS
     SELECT
         u.userId as userId,
         u.profileList[0]."id" as profileId,
